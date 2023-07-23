@@ -1,0 +1,21 @@
+{
+    "version": 7,
+    "configurePresets": [
+        {
+            "name": "Base",
+            "hidden": true
+        },
+        {
+            "name": "Win64",
+            "inherits": "Base",
+            "generator": "Visual Studio 17 2022",
+            "architecture":
+            {
+                "value": "x64",
+                "strategy": "set"
+            },
+            "binaryDir": "${sourceDir}/Engine/Build/Win64",
+            "installDir": "${sourceDir}/Engine/Install"
+        }
+    ]
+}
