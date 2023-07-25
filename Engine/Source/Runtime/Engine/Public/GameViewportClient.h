@@ -3,14 +3,23 @@
 
 #include "CoreMinimal.h"
 
-#include "UObject.h"
+#include "UObject/UObject.h"
+#include "Application/PlatformApp.h"
 
-class UGameViewportClient : public UObject
+class UGameViewportClient : public UObject, public IPlatformAppCallbackInterface
 {
 
 public:
     void Init();
+    void PumpMessages();
 
-public:
-    void InputKey();
+private:
+    virtual void OnActivate() override;
+    virtual void OnDestory() override;
+
+    virtual void OnResize() override;
+
+    virtual void OnMouseDown() override;
+    virtual void OnMouseUp() override;
+    virtual void OnMouseMove() override;
 };

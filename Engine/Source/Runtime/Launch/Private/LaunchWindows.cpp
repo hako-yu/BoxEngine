@@ -1,6 +1,7 @@
 
 #include "CoreMinimal.h"
 
+#include "Application/WindowsApp.h"
 #include "Engine.h"
 #include "EditorMain.h"
 
@@ -8,7 +9,11 @@
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
-    UEngine* Engine = NewObject<UEngine>();
+    UEngine* Engine = UEngine::CreateEngine();
+
+    Engine->Init();
+    Engine->Start();
+    Engine->Exit();
 
     return 0;
 }

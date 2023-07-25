@@ -1,8 +1,8 @@
 #pragma once
 
-#include "CoreTypes.h"
+#include "CoreTypes/CoreTypes.h"
 
 /*----------------------------------------------------------------------------
 	UObject
 ----------------------------------------------------------------------------*/
-#include "UObjectGlobals.h"
+#include "UObject/UObjectGlobals.h"
