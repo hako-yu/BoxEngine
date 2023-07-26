@@ -7,6 +7,7 @@ endif()
 
 add_subdirectory(Source/Runtime/Platform)
 add_subdirectory(Source/Runtime/Core)
+add_subdirectory(Source/Runtime/Render/RenderCore)
 add_subdirectory(Source/Runtime/Engine)
 add_subdirectory(Source/Editor/EditorMain)
 

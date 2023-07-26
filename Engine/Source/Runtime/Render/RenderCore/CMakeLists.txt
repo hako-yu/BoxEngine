@@ -1,0 +1,8 @@
+
+include(${BE_ROOT_DIR}/Cmake/ModuleRules.cmake)
+
+implement_module(RenderCore)
+
+set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "Engine/Source/Runtime/Render")
+
+add_public_dependency_module(Platform)

@@ -15,5 +15,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     Engine->Start();
     Engine->Exit();
 
+    delete GEngine;
     return 0;
 }
