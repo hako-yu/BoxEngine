@@ -19,6 +19,11 @@ void FWindowsRunnableThread::CreateInternal()
 	constexpr uint64 DefaultStackSize = 1024 * 1024;
 	// hThread = CreateThread(NULL, DefaultStackSize, _ThreadProc, Runnable, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (DWORD*)&ThreadID);
 	hThread = CreateThread(NULL, DefaultStackSize, _ThreadProc, this, 0, (DWORD*)&ThreadID);
+
+	if (hThread)
+	{
+		SetThreadDescription(hThread, ThreadName.c_str());
+	}
 }
 
 void FWindowsRunnableThread::Kill()

@@ -5,7 +5,7 @@
 #include "WindowsRunnableThread.h"
 #endif // PLATFORM_WINDOWS
 
-FRunnableThread* FRunnableThread::Create(FRunnable* InRunnable)
+FRunnableThread* FRunnableThread::Create(FRunnable* InRunnable, const WIDECHAR* InThreadName)
 {
     FRunnableThread* NewThread = nullptr;
 
@@ -16,6 +16,7 @@ FRunnableThread* FRunnableThread::Create(FRunnable* InRunnable)
     if (NewThread)
     {
 	    NewThread->Runnable = InRunnable;
+        NewThread->ThreadName = FString(InThreadName);
 	    NewThread->CreateInternal();
     }
 

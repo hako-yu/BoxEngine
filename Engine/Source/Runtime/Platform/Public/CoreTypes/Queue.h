@@ -32,9 +32,13 @@ public:
 		std::queue<T>::pop();
 	}
 
-	T& Front()
+	T* Front()
 	{
-		return std::queue<T>::front();
+		if (std::queue<T>::empty())
+		{
+			return nullptr;
+		}
+		return &std::queue<T>::front();
 	}
 
 };

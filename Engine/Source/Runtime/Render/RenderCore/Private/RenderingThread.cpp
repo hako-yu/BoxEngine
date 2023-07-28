@@ -10,7 +10,7 @@ FRunnableThread* GRenderThread = nullptr;
 void FRenderingThread::StartRenderingThread()
 {
 	FRenderingRunnable* RenderingRunnable = new FRenderingRunnable();
-	GRenderThread = FRunnableThread::Create(RenderingRunnable);
+	GRenderThread = FRunnableThread::Create(RenderingRunnable, L"Render Thread");
 }
 
 void FRenderingThread::StopRenderingThread()

@@ -30,7 +30,7 @@ class FRunnableEventQueue
 {
 public:
 	void Push(FRunnableEvent Lambda);
-	FRunnableEvent Pop();
+	FRunnableEvent* Pop();
 
 private:
 	TQueue<FRunnableEvent> Queue;

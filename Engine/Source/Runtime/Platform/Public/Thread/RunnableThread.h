@@ -7,7 +7,7 @@
 class FRunnableThread
 {
 public:
-	static FRunnableThread* Create(FRunnable* InRunnable);
+	static FRunnableThread* Create(FRunnable* InRunnable, const WIDECHAR* InThreadName);
 
 	void EnqueueEvent(FRunnableEvent Lambda);
 
@@ -19,6 +19,9 @@ public:
 protected:
 	// Thread Id
 	uint32 ThreadID;
+
+	// Thread Name
+	FString ThreadName;
 
 	// Thread Task
 	FRunnable* Runnable;
