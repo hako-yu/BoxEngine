@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "Thread/RunnableThread.h"
 
 #include <windows.h>

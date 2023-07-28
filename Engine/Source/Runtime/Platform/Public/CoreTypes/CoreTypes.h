@@ -10,3 +10,6 @@ typedef	signed char			int8;
 typedef signed short int	int16;
 typedef signed int	 		int32;
 typedef signed long long	int64;
+
+#include "Array.h"
+#include "Queue.h"

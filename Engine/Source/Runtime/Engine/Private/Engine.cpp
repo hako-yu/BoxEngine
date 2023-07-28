@@ -3,6 +3,7 @@
 
 #include "Process/PlatformProcess.h"
 #include "GameViewportClient.h"
+#include "RHIThread.h"
 #include "RenderingThread.h"
 
 UEngine* GEngine = nullptr;
@@ -22,6 +23,7 @@ void UEngine::Init()
 	GameViewportClient = NewObject<UGameViewportClient>();
 	GameViewportClient->Init();
 
+	FRHIThread::StartRHIThread();
 	FRenderingThread::StartRenderingThread();
 }
 
@@ -31,12 +33,15 @@ void UEngine::Start()
 	{
 		GameViewportClient->PumpMessages();
 		FPlatformProcess::SleepForSeconds(.1f);
+
+		FRenderingThread::Draw();
 	}
 }
 
 void UEngine::Exit()
 {
 	FRenderingThread::StopRenderingThread();
+	FRHIThread::StopRHIThread();
 }
 
 void UEngine::RequestingExit()

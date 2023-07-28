@@ -2,6 +2,7 @@
 #include "RenderingThread.h"
 
 #include "RenderingRunnable.h"
+#include "Thread/Runnable.h"
 #include "Thread/RunnableThread.h"
 
 FRunnableThread* GRenderThread = nullptr;
@@ -18,5 +19,17 @@ void FRenderingThread::StopRenderingThread()
 	{
 		GRenderThread->Kill();
 		delete GRenderThread;
+	}
+}
+
+void FRenderingThread::Draw()
+{
+	if (GRenderThread)
+	{
+		GRenderThread->EnqueueEvent([](FRunnable* Runnable)
+			{
+				FRenderingRunnable* RenderingRunnable = static_cast<FRenderingRunnable*>(Runnable);
+				RenderingRunnable->Draw();
+			});
 	}
 }

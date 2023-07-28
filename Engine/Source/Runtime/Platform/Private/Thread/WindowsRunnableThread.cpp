@@ -3,20 +3,13 @@
 
 #include "Thread/Runnable.h"
 
-FRunnableThread* FRunnableThread::Create(FRunnable* InRunnable)
+DWORD WINAPI FWindowsRunnableThread::_ThreadProc(LPVOID InThread)
 {
-	FRunnableThread* NewThread = new FWindowsRunnableThread();
-	
-	NewThread->Runnable = InRunnable;
+	OutputDebugString("start thread\n");
 
-	return NewThread;
-}
+	FRunnableThread* pThread = (FRunnableThread*)InThread;
 
-DWORD WINAPI FWindowsRunnableThread::_ThreadProc(LPVOID InRunnable)
-{
-	FRunnable* pRunnable = (FRunnable*)InRunnable;
-
-	pRunnable->Init();
+	pThread->Run();
 
 	return 0;
 }
@@ -24,16 +17,16 @@ DWORD WINAPI FWindowsRunnableThread::_ThreadProc(LPVOID InRunnable)
 void FWindowsRunnableThread::CreateInternal()
 {
 	constexpr uint64 DefaultStackSize = 1024 * 1024;
-	CreateThread(NULL, DefaultStackSize, _ThreadProc, Runnable, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (DWORD*)&ThreadID);
+	// hThread = CreateThread(NULL, DefaultStackSize, _ThreadProc, Runnable, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (DWORD*)&ThreadID);
+	hThread = CreateThread(NULL, DefaultStackSize, _ThreadProc, this, 0, (DWORD*)&ThreadID);
 }
 
 void FWindowsRunnableThread::Kill()
 {
 	if (Runnable)
 	{
-		Runnable->Stop();
-		delete Runnable;
-	}
+		Runnable->Kill();
 
-	CloseHandle(hThread);
+		// When Thread is Exitted, CloseHandle(hThread);
+	}
 }

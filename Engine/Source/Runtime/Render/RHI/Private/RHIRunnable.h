@@ -3,10 +3,12 @@
 
 #include "Thread/Runnable.h"
 
-class FRenderingRunnable : public FRunnable
+class FRHICore;
+
+class FRHIRunnable : public FRunnable
 {
-public:
-    void Draw();
+protected:
+    FRHICore* RHICore;
 
 protected:
     virtual bool NativeInit() override;

@@ -1,17 +1,17 @@
 
 #include "RenderingRunnable.h"
 
-void FRenderingRunnable::Init()
+void FRenderingRunnable::Draw()
 {
 
 }
 
-void FRenderingRunnable::Run()
+bool FRenderingRunnable::NativeInit()
 {
-
+	return true;
 }
 
-void FRenderingRunnable::Stop()
+void FRenderingRunnable::NativeExit()
 {
 
 }
