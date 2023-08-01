@@ -2,7 +2,7 @@
 #include "RHIThread.h"
 
 #include "RHIRunnable.h"
-#include "Thread/RunnableThread.h"
+#include "RHICore.h"
 
 FRunnableThread* GRHIThread = nullptr;
 

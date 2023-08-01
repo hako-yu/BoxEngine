@@ -9,6 +9,7 @@
 class FD3D12Adapter;
 class FD3D12Device;
 class FD3D12CommandList;
+class FD3D12Viewport;
 
 class FD3D12Core : public FRHICore
 {
@@ -21,15 +22,14 @@ protected:
 	TArray<FD3D12Adapter*> AdapterList;
 	FD3D12Device* Device;
 	FD3D12CommandList* CommandList;
-
-	Microsoft::WRL::ComPtr<IDXGISwapChain> DxgiSwapChain;
+	FD3D12Viewport* MainViewport;
 
 protected:
 	void InitAdapters();
 	void InitDevice();
 	void CheckSupports();
 	void InitCommandList();
-	void InitSwapChain();
+	void InitViewport();
 
 protected:
 	virtual void Init() override;

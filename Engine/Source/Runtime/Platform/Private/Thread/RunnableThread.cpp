@@ -1,6 +1,8 @@
 
 #include "Thread/RunnableThread.h"
 
+#include "Process/PlatformProcess.h"
+
 #ifdef PLATFORM_WINDOWS
 #include "WindowsRunnableThread.h"
 #endif // PLATFORM_WINDOWS
@@ -27,6 +29,10 @@ void FRunnableThread::EnqueueEvent(FRunnableEvent Lambda)
 {
     if (Runnable)
     {
+        while (Runnable->EventQueue.IsFull())
+        {
+            FPlatformProcess::SleepForSeconds(.05f);
+        }
         Runnable->EventQueue.Push(Lambda);
     }
 }

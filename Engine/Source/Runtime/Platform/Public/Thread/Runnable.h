@@ -30,9 +30,13 @@ class FRunnableEventQueue
 {
 public:
 	void Push(FRunnableEvent Lambda);
-	FRunnableEvent* Pop();
+	void Pop();
+	FRunnableEvent* Front();
+	bool IsFull();
 
 private:
+	uint8 MaxQueueLen = 1;
+
 	TQueue<FRunnableEvent> Queue;
 	std::shared_mutex Mutex;
 };

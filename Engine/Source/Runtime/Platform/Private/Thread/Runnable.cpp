@@ -25,7 +25,7 @@ void FRunnableEventQueue::Push(FRunnableEvent Lambda)
 	Mutex.unlock();
 }
 
-FRunnableEvent* FRunnableEventQueue::Pop()
+void FRunnableEventQueue::Pop()
 {
 	Mutex.lock_shared();
 	FRunnableEvent* Lambda = Queue.Front();
@@ -37,8 +37,24 @@ FRunnableEvent* FRunnableEventQueue::Pop()
 		Queue.Pop();
 		Mutex.unlock();
 	}
+}
+
+FRunnableEvent* FRunnableEventQueue::Front()
+{
+	Mutex.lock_shared();
+	FRunnableEvent* Lambda = Queue.Front();
+	Mutex.unlock_shared();
 
 	return Lambda;
+}
+
+bool FRunnableEventQueue::IsFull()
+{
+	Mutex.lock_shared();
+	uint8 Len = Queue.Num();
+	Mutex.unlock_shared();
+
+	return MaxQueueLen <= Len;
 }
 
 void FRunnable::Init()
@@ -60,10 +76,11 @@ void FRunnable::Run()
 	
 	while (Status.Get() == ERunnableStatus::Running)
 	{
-		FRunnableEvent* Event = EventQueue.Pop();
+		FRunnableEvent* Event = EventQueue.Front();
 		if (Event)
 		{
 			(*Event)(this);
+			EventQueue.Pop();
 		}
 		else
 		{

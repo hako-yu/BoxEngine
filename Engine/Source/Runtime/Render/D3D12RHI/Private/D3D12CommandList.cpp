@@ -3,6 +3,7 @@
 
 #include "D3D12Util.h"
 #include "D3D12Device.h"
+#include "D3D12Viewport.h"
 
 FD3D12CommandList* FD3D12CommandList::Create(FD3D12Device* InDevice)
 {
@@ -51,11 +52,34 @@ void FD3D12CommandList::Reset()
 	ThrowIfFailed(DxCommandList->Reset(DxDirectCmdListAlloc.Get(), nullptr));
 }
 
+void FD3D12CommandList::SetViewport(FD3D12Viewport* InViewport)
+{
+	Viewport = InViewport;
+}
+
 void FD3D12CommandList::Execute()
 {
+	DxCommandList->ResourceBarrier(1, &(Viewport->BuildRenderTargetBarrier()));
+
+	DxCommandList->RSSetViewports(1, &(Viewport->DxScreenViewport));
+	DxCommandList->RSSetScissorRects(1, &(Viewport->DxScissorRect));
+
+	/*
+	FLOAT InitColor[4] = { 0, 0, 1, 1 };
+	DxCommandList->ClearRenderTargetView(Viewport->GetCurrentBackBufferDescHandle(), InitColor, 0, nullptr);
+	DxCommandList->ClearDepthStencilView(Viewport->GetDepthStencilDescHandle(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+
+	DxCommandList->OMSetRenderTargets(1, &(Viewport->GetCurrentBackBufferDescHandle()), true, &(Viewport->GetDepthStencilDescHandle()));
+	*/
+
+	DxCommandList->ResourceBarrier(1, &(Viewport->BuildPresentBarrier()));
+
+
 	ThrowIfFailed(DxCommandList->Close());
 
 	// Add the command list to the queue for execution.
 	ID3D12CommandList* CmdLists[] = { DxCommandList.Get() };
 	DxCommandQueue->ExecuteCommandLists(_countof(CmdLists), CmdLists);
+
+	Viewport->Present();
 }
