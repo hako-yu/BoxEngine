@@ -34,7 +34,7 @@ void UEngine::Start()
 		GameViewportClient->PumpMessages();
 		FPlatformProcess::SleepForSeconds(.1f);
 
-		FRenderingThread::Draw();
+		GameViewportClient->Draw();
 	}
 }
 

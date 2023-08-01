@@ -3,25 +3,29 @@
 
 #include "D3D12Core.h"
 
+FRHICore* GRHICore = nullptr;
+
 bool FRHIRunnable::NativeInit()
 {
 #ifdef D3D12_SUPPORTS
-	RHICore = new FD3D12Core();
+	GRHICore = FD3D12Core::Create();
 #endif // D3D12_SUPPORTS
 
-	if (RHICore == nullptr)
+	if (GRHICore == nullptr)
 	{
 		return false;
 	}
 	
-	RHICore->Init();
-
-	RHICore->Draw();
+	GRHICore->Init();
 
 	return true;
 }
 
 void FRHIRunnable::NativeExit()
 {
-
+	if (GRHICore)
+	{
+		GRHICore->Release();
+		delete GRHICore;
+	}
 }

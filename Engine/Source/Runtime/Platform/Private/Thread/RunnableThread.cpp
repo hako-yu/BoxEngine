@@ -39,6 +39,7 @@ void FRunnableThread::Run()
         Runnable->Init();
 
         // Exit
+        Runnable->Exit();
         delete Runnable;
     }
 }

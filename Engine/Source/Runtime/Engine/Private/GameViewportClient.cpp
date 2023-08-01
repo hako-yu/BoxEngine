@@ -2,10 +2,11 @@
 #include "GameViewportClient.h"
 
 #include "Engine.h"
+#include "RenderingThread.h"
 
 void UGameViewportClient::Init()
 {
-	PlatformAppProc = this;
+	GPlatformAppProc = this;
 	FPlatformApplication::CreateMainWindow();
 	FPlatformApplication::ShowMainWindow();
 }
@@ -13,6 +14,11 @@ void UGameViewportClient::Init()
 void UGameViewportClient::PumpMessages()
 {
 	FPlatformApplication::PumpMessages();
+}
+
+void UGameViewportClient::Draw()
+{
+	FRenderingThread::Draw();
 }
 
 void UGameViewportClient::OnActivate()

@@ -13,14 +13,14 @@ public:
     virtual void OnMouseUp() = 0;
     virtual void OnMouseMove() = 0;
 };
-extern IPlatformAppCallbackInterface* PlatformAppProc;
+extern IPlatformAppCallbackInterface* GPlatformAppProc;
 
 struct FPlatformAppConfig
 {
     int Width = 1024;
     int Height = 768;
 };
-extern FPlatformAppConfig PlatformAppConfig;
+extern FPlatformAppConfig GPlatformAppConfig;
 
 class FPlatformApplication
 {

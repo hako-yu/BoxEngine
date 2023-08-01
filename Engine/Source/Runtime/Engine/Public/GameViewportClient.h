@@ -13,6 +13,8 @@ public:
     void Init();
     void PumpMessages();
 
+    void Draw();
+
 private:
     virtual void OnActivate() override;
     virtual void OnDestory() override;

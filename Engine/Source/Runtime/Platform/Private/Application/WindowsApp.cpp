@@ -5,8 +5,8 @@
 /*
  * AppCore
  */
-FPlatformAppConfig PlatformAppConfig;
-IPlatformAppCallbackInterface* PlatformAppProc = nullptr;
+FPlatformAppConfig GPlatformAppConfig;
+IPlatformAppCallbackInterface* GPlatformAppProc = nullptr;
 
 /*
  * WindowsApp
@@ -24,25 +24,25 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg)
 	{
 	case WM_ACTIVATE:
-		PlatformAppProc->OnActivate();
+		GPlatformAppProc->OnActivate();
 		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);
-		PlatformAppProc->OnDestory();
+		GPlatformAppProc->OnDestory();
 		return 0;
 
 	case WM_LBUTTONDOWN:
 	case WM_MBUTTONDOWN:
 	case WM_RBUTTONDOWN:
-		PlatformAppProc->OnMouseDown();
+		GPlatformAppProc->OnMouseDown();
 		return 0;
 	case WM_LBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_RBUTTONUP:
-		PlatformAppProc->OnMouseUp();
+		GPlatformAppProc->OnMouseUp();
 		return 0;
 	case WM_MOUSEMOVE:
-		PlatformAppProc->OnMouseMove();
+		GPlatformAppProc->OnMouseMove();
 		return 0;
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -69,7 +69,7 @@ void FPlatformApplication::CreateMainWindow()
 	}
 
 	// Compute window rectangle dimensions based on requested client area dimensions.
-	RECT R = { 0, 0, PlatformAppConfig.Width, PlatformAppConfig.Height };
+	RECT R = { 0, 0, GPlatformAppConfig.Width, GPlatformAppConfig.Height };
 	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
 	int width = R.right - R.left;
 	int height = R.bottom - R.top;
