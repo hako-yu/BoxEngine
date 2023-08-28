@@ -20,6 +20,9 @@ public:
 
 	void RequestingExit();
 
+protected:
+	void PreInitRenderCore();
+
 public:
 	UGameViewportClient* GameViewportClient;
 

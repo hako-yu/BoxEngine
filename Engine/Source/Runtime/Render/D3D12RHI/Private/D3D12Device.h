@@ -1,17 +1,25 @@
 
 #pragma once
 
-#include "D3D12Minimal.h"
+#include "D3D12Utils.h"
 
 class FD3D12Adapter;
+class FD3D12CommandQueue;
 
 class FD3D12Device
 {
 public:
-	static FD3D12Device* Create(FD3D12Adapter* InAdapter);
+	FD3D12Device(FD3D12Adapter* Adapter);
+	~FD3D12Device();
 
-	ID3D12Device* Get() { return DxDevice.Get(); }
+public:
+	inline ID3D12Device* GetDxDevice() const { return DxDevice.Get(); }
+	inline FD3D12CommandQueue* GetCommandQueue() const { return CommandQueue; }
 
-protected:
+	void Setup();
+
+private:
+	FD3D12CommandQueue* CommandQueue;
+
 	Microsoft::WRL::ComPtr<ID3D12Device> DxDevice;
 };

@@ -1,14 +1,14 @@
 
 #include "CoreMinimal.h"
 
-#include "Application/WindowsApp.h"
-#include "Engine.h"
-#include "EditorMain.h"
-
 #include <windows.h>
+
+#include "Engine.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
+    GAppInstance = hInstance;
+
     UEngine* Engine = UEngine::CreateEngine();
 
     Engine->Init();

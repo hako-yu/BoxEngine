@@ -4,7 +4,8 @@
 #include "CoreMinimal.h"
 
 #include "UObject/UObject.h"
-#include "Application/PlatformApp.h"
+
+class FCanvas;
 
 class UGameViewportClient : public UObject, public IPlatformAppCallbackInterface
 {
@@ -24,4 +25,7 @@ private:
     virtual void OnMouseDown() override;
     virtual void OnMouseUp() override;
     virtual void OnMouseMove() override;
+
+private:
+    FCanvas* Canvas;
 };

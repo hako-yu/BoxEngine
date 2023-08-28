@@ -1,35 +1,48 @@
 
 #include "RenderingThread.h"
 
-#include "RenderingRunnable.h"
-#include "Thread/Runnable.h"
-#include "Thread/RunnableThread.h"
+// QueueWork is temporary plan, should be replaced by TaskGraph.
+#include "QueueWork/QueueWork.h"
 
-FRunnableThread* GRenderThread = nullptr;
+#include "RenderingRunnable.h"
+#include "Runnable/RunnableThread.h"
+
+// QueueWork is temporary plan, should be replaced by TaskGraph.
+FQueueWork<FRenderingCommandFunc>* GRenderingCommandQueueWork = nullptr;
+
+FRenderingRunnable* GRenderingRunnable = nullptr;
+FRunnableThread* GRenderingThread = nullptr;
 
 void FRenderingThread::StartRenderingThread()
 {
-	FRenderingRunnable* RenderingRunnable = new FRenderingRunnable();
-	GRenderThread = FRunnableThread::Create(RenderingRunnable, L"Render Thread");
+	// QueueWork is temporary plan, should be replaced by TaskGraph.
+	GRenderingCommandQueueWork = new FQueueWork<FRenderingCommandFunc>();
+
+	GRenderingRunnable = new FRenderingRunnable();
+	GRenderingThread = FRunnableThread::Create(GRenderingRunnable, L"Render Thread");
 }
 
 void FRenderingThread::StopRenderingThread()
 {
-	if (GRenderThread)
+	if (GRenderingRunnable != nullptr && GRenderingThread != nullptr)
 	{
-		GRenderThread->Kill();
-		delete GRenderThread;
+		GRenderingRunnable->Stop();
+
+		// delete GRenderingRunnable;
+		// delete GRenderingThread;
 	}
 }
 
-void FRenderingThread::Draw()
+void FRenderingThread::EnqueueRenderingCommand(FRenderingCommandFunc Lambda)
 {
-	if (GRenderThread)
+	// QueueWork is temporary plan, should be replaced by TaskGraph.
+	GRenderingCommandQueueWork->EnqueueEvent(Lambda);
+}
+
+void FRenderingThread::FlushRenderingCommands()
+{
+	while (!GRenderingCommandQueueWork->IsEmpty())
 	{
-		GRenderThread->EnqueueEvent([](FRunnable* Runnable)
-			{
-				FRenderingRunnable* RenderingRunnable = static_cast<FRenderingRunnable*>(Runnable);
-				RenderingRunnable->Draw();
-			});
+		FPlatformProcess::SleepForSeconds(0.01);
 	}
 }

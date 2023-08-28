@@ -1,26 +1,35 @@
 
 #include "RenderingRunnable.h"
+#include "RenderingThread.h"
 
-#include "RHIThread.h"
-#include "RHICore.h"
+// QueueWork is temporary plan, should be replaced by TaskGraph.
+#include "QueueWork/QueueWork.h"
 
-void FRenderingRunnable::Draw()
+// QueueWork is temporary plan, should be replaced by TaskGraph.
+extern FQueueWork<FRenderingCommandFunc>* GRenderingCommandQueueWork;
+
+void FRenderingRunnable::Init()
 {
-	if (GRHIThread && GRHIThread->IsRunning())
-	{
-		GRHIThread->EnqueueEvent([](FRunnable* Runnable)
-			{
-				GRHICore->Draw();
-			});
-	}
+	// QueueWork is temporary plan, should be replaced by TaskGraph.
+	QueueWorkExecutor = new FRenderingCommandExecutor();
+	GRenderingCommandQueueWork->RegisterExecutor(QueueWorkExecutor);
+
 }
 
-bool FRenderingRunnable::NativeInit()
+void FRenderingRunnable::Run()
 {
-	return true;
+	// QueueWork is temporary plan, should be replaced by TaskGraph.
+	GRenderingCommandQueueWork->Run();
+
 }
 
-void FRenderingRunnable::NativeExit()
+void FRenderingRunnable::Stop()
+{
+	// QueueWork is temporary plan, should be replaced by TaskGraph.
+	GRenderingCommandQueueWork->Stop();
+}
+
+void FRenderingRunnable::Exit()
 {
 
 }

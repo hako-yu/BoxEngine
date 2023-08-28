@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "CoreTypes/CoreTypes.h"
+#include "PlatformMinimal.h"
 
 /*----------------------------------------------------------------------------
 	UObject

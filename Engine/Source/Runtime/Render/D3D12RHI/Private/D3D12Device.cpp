@@ -1,19 +1,26 @@
 
 #include "D3D12Device.h"
 
-#include "D3D12Util.h"
 #include "D3D12Adapter.h"
+#include "D3D12CommandQueue.h"
 
-FD3D12Device* FD3D12Device::Create(FD3D12Adapter* InAdapter)
+FD3D12Device::FD3D12Device(FD3D12Adapter* Adapter)
 {
-	FD3D12Device* Device = new FD3D12Device();
+	ThrowIfFailed(D3D12CreateDevice(
+		Adapter->GetDxAdapter(),
+		D3D_FEATURE_LEVEL_11_0,
+		IID_PPV_ARGS(&DxDevice)));
+}
 
-	if (Device)
+FD3D12Device::~FD3D12Device()
+{
+	if (CommandQueue)
 	{
-		ThrowIfFailed(D3D12CreateDevice(
-			InAdapter ? InAdapter->Get() : nullptr,
-			D3D_FEATURE_LEVEL_11_0,
-			IID_PPV_ARGS(&(Device->DxDevice))));
+		delete CommandQueue;
 	}
-	return Device;
+}
+
+void FD3D12Device::Setup()
+{
+	CommandQueue = new FD3D12CommandQueue(this);
 }

@@ -3,12 +3,16 @@
 
 #include "Engine.h"
 #include "RenderingThread.h"
+#include "Canvas.h"
+#include "SceneRenderer.h"
 
 void UGameViewportClient::Init()
 {
 	GPlatformAppProc = this;
 	FPlatformApplication::CreateMainWindow();
 	FPlatformApplication::ShowMainWindow();
+
+	Canvas = new FCanvas(GPlatformAppConfig.WindowHandle, GPlatformAppConfig.Width, GPlatformAppConfig.Height);
 }
 
 void UGameViewportClient::PumpMessages()
@@ -18,7 +22,13 @@ void UGameViewportClient::PumpMessages()
 
 void UGameViewportClient::Draw()
 {
-	FRenderingThread::Draw();
+	FCanvas* TargetCanvas = Canvas;
+	FRenderingThread::EnqueueRenderingCommand([TargetCanvas]()
+		{
+			FSceneRenderer SceneRenderer(nullptr, TargetCanvas);
+			SceneRenderer.Render();
+		});
+	FRenderingThread::FlushRenderingCommands();
 }
 
 void UGameViewportClient::OnActivate()
