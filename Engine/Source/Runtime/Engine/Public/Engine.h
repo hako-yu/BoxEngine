@@ -6,6 +6,7 @@
 #include "UObject/UObject.h"
 
 class UGameViewportClient;
+class UWorld;
 
 class UEngine : public UObject
 {
@@ -25,6 +26,7 @@ protected:
 
 public:
 	UGameViewportClient* GameViewportClient;
+	UWorld* World;
 
 private:
 	bool bIsRequestingExit = false;

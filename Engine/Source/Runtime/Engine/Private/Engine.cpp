@@ -8,6 +8,7 @@
 #include "RenderingThread.h"
 
 #include "GameViewportClient.h"
+#include "World.h"
 
 UEngine* GEngine = nullptr;
 
@@ -31,6 +32,8 @@ void UEngine::Init()
 	GameViewportClient->Init();
 
 	// Init World
+	World = NewObject<UWorld>();
+	World->Init();
 }
 
 void UEngine::Start()

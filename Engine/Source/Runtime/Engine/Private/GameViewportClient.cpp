@@ -3,6 +3,8 @@
 
 #include "Engine.h"
 #include "RenderingThread.h"
+#include "World.h"
+#include "Scene.h"
 #include "Canvas.h"
 #include "SceneRenderer.h"
 
@@ -20,12 +22,15 @@ void UGameViewportClient::PumpMessages()
 	FPlatformApplication::PumpMessages();
 }
 
-void UGameViewportClient::Draw()
+void UGameViewportClient::Draw(UWorld* InWorld)
 {
+	FScene* Scene = InWorld->GetScene();
 	FCanvas* TargetCanvas = Canvas;
-	FRenderingThread::EnqueueRenderingCommand([TargetCanvas]()
+
+	Scene->RefreshPrimitiveList();
+	FRenderingThread::EnqueueRenderingCommand([Scene, TargetCanvas]()
 		{
-			FSceneRenderer SceneRenderer(nullptr, TargetCanvas);
+			FSceneRenderer SceneRenderer(Scene, TargetCanvas);
 			SceneRenderer.Render();
 		});
 	FRenderingThread::FlushRenderingCommands();

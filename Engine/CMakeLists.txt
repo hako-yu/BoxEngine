@@ -15,6 +15,9 @@ add_subdirectory(Source/Runtime/Render/RHI)
 add_subdirectory(Source/Runtime/Render/D3D12RHI)
 add_subdirectory(Source/Runtime/Render/RHICore)
 
+# RDG
+add_subdirectory(Source/Runtime/Render/RDG)
+
 # Renderer
 add_subdirectory(Source/Runtime/Render/Renderer)
 add_subdirectory(Source/Runtime/Render/RenderCore)

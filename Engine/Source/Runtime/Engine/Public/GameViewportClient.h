@@ -14,7 +14,7 @@ public:
     void Init();
     void PumpMessages();
 
-    void Draw();
+    void Draw(class UWorld* InWorld);
 
 private:
     virtual void OnActivate() override;
