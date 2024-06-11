@@ -1,0 +1,24 @@
+{
+    "version": 7,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 27,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "Win64",
+            "displayName": "Win64",
+            "description": "windows x64",
+            "hidden": false,
+            "binaryDir": "${sourceDir}/Intermediate/Win64",
+            "installDir": "${sourceDir}/Intermediate/Win64/Install",
+            "generator": "Visual Studio 17 2022",
+            "architecture": "x64",
+            "environment": {
+                "CMAKE_CONFIGURATION_TYPES": "Debug;Release;",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/Install"
+            }
+        }
+    ]
+}
