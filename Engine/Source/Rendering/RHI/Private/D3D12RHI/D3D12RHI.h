@@ -2,7 +2,7 @@
 
 #include "RHICore/DynamicRHI.h"
 
-class FD3D12Device;
+class FD3D12Adapter;
 
 class FD3D12RHI : public FDynamicRHI
 {
@@ -16,6 +16,9 @@ protected:
 protected:
 	virtual FRHIViewport* CreateRHIViewport() override;
 
+protected:
+	void InitRootAdapter();
+
 private:
-	FD3D12Device* Device;
+	FD3D12Adapter* RootAdapter = nullptr;
 };

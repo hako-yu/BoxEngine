@@ -1,24 +1,41 @@
 #pragma once
 
-#include "RHICore/RHICommandList.h"
-#include "D3D12RHI/D3D12Device.h"
-#include "D3D12RHI/D3D12Common.h"
+#include "D3D12RHI/D3D12RHICommon.h"
 
-class FD3D12CommandQueue : public FRHICommandQueue, public FD3D12DeviceChild
+class FD3D12CommandQueue : public FD3D12DeviceChild
 {
 public:
-	FD3D12CommandQueue(FD3D12Device* Device);
+	FD3D12CommandQueue(FD3D12Device* ParentDevice);
 	~FD3D12CommandQueue();
+
+public:
+	ID3D12CommandQueue* GetDxCommandQueue() { return DxCommandQueue.Get(); }
 
 private:
 	ComPtr<ID3D12CommandQueue> DxCommandQueue;
 };
 
-class FD3D12CommandList : public FRHICommandList, public FD3D12DeviceChild
+class FD3D12CommandAllocator : public FD3D12DeviceChild
 {
 public:
-	FD3D12CommandList(FD3D12Device* Device);
+	FD3D12CommandAllocator(FD3D12Device* ParentDevice);
+	~FD3D12CommandAllocator();
+
+public:
+	ID3D12CommandAllocator* GetDxCommandAllocator() { return DxCommandAllocator.Get(); }
+
+private:
+	ComPtr<ID3D12CommandAllocator> DxCommandAllocator;
+};
+
+class FD3D12CommandList : public FD3D12DeviceChild
+{
+public:
+	FD3D12CommandList(FD3D12CommandAllocator* Allocator, FD3D12Device* ParentDevice);
 	~FD3D12CommandList();
+
+public:
+	ID3D12CommandList* GetDxCommandList() { return DxCommandList.Get(); }
 
 private:
 	ComPtr<ID3D12CommandList> DxCommandList;
