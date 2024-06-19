@@ -11,8 +11,3 @@ FBaseSceneRenderer::~FBaseSceneRenderer()
 {
 
 }
-
-void FBaseSceneRenderer::Render()
-{
-
-}

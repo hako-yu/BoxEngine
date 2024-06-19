@@ -4,5 +4,9 @@
 
 class FPrimitiveInfo
 {
+public:
+	FPrimitiveInfo(FString FilePath);
+
+protected:
 	TArray<FVector> Vertexs;
 };
