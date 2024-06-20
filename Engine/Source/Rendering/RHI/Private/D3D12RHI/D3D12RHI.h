@@ -7,18 +7,18 @@ class FD3D12Adapter;
 class FD3D12RHI : public FDynamicRHI
 {
 public:
+	static FD3D12RHI* Get() { return static_cast<FD3D12RHI*>(Singleton); }
 	static bool Create();
 
 protected:
 	virtual void Init() override;
 	virtual void Exit() override;
 
-protected:
-	virtual FRHIViewport* CreateRHIViewport() override;
-
-protected:
+public:
 	void InitRootAdapter();
 
-private:
+	FD3D12Adapter* GetRootAdapter() { return RootAdapter; }
+
+protected:
 	FD3D12Adapter* RootAdapter = nullptr;
 };

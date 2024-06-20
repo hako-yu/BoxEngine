@@ -1,8 +1,7 @@
 #include "D3D12RHI/D3D12RHI.h"
 
 #include "D3D12RHI/D3D12Adapter.h"
-#include "D3D12RHI/D3D12Device.h"
-#include "D3D12RHI/D3D12Viewport.h"
+#include "D3D12RHI/D3D12Commands.h"
 
 bool FD3D12RHI::Create()
 {
@@ -17,17 +16,14 @@ bool FD3D12RHI::Create()
 
 void FD3D12RHI::Init()
 {
-	InitRootAdapter();
+	RHICommands = new FD3D12Commands();
 }
 
 void FD3D12RHI::Exit()
 {
-	delete RootAdapter;
-}
+	delete RHICommands;
 
-FRHIViewport* FD3D12RHI::CreateRHIViewport()
-{
-	return FD3D12Viewport::Create();
+	if (RootAdapter) delete RootAdapter;
 }
 
 void FD3D12RHI::InitRootAdapter()

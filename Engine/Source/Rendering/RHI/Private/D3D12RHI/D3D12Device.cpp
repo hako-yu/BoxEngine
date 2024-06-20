@@ -19,6 +19,10 @@ FD3D12Device::FD3D12Device(FD3D12Adapter* ParentAdapter)
 
 FD3D12Device::~FD3D12Device()
 {
+	if (DefaultCommandList) delete DefaultCommandList;
+	if (DefaultCommandAllocator) delete DefaultCommandAllocator;
+	if (RootQueue) delete RootQueue;
+
 	DxDevice.Reset();
 }
 

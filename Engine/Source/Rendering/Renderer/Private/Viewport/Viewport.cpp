@@ -3,6 +3,7 @@
 #include <windows.h>
 
 #include "Logging.h"
+#include "RHICore/RHICommands.h"
 
 FViewport::FViewport(int InWidth, int InHeight)
 	: Width(InWidth)
@@ -85,9 +86,7 @@ void FViewport::AddToWindow(void* InAppInstance)
     ShowWindow((HWND)Wnd, SW_SHOW);
     // UpdateWindow((HWND)Wnd);
 
-    // FRenderCore* RenderCore = FRenderCore::Get();
-    // RenderSwapChain = RenderCore->CreateSwapChain();
-    // RenderSwapChain->Setup(Wnd, Width, Height);
+    EXECUTE_RHI_COMMAND(ResetOutputWindow)(Wnd, Width, Height);
 }
 
 void FViewport::Update()
