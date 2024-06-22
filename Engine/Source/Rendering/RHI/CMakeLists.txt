@@ -29,4 +29,8 @@ target_include_directories(
 target_link_libraries(
     ${TARGET_NAME}
     PRIVATE Logging
+
+    PRIVATE dxgi
+    PRIVATE D3D12
+    PRIVATE d3dcompiler
 )

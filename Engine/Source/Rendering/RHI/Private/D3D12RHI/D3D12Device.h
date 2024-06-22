@@ -19,6 +19,9 @@ public:
 
 	FD3D12CommandQueue* GetRootQueue() { return RootQueue; }
 
+	FD3D12CommandAllocator* GetDefaultCommandAllocator() { return DefaultCommandAllocator; }
+	FD3D12CommandList* GetDefaultCommandList() { return DefaultCommandList; }
+
 protected:
 	FD3D12CommandQueue* RootQueue = nullptr;
 

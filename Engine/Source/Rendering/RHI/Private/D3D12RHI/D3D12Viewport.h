@@ -10,6 +10,7 @@ public:
 
 public:
 	void InitSwapChain(void* WindowHandle, int Width, int Height);
+	void Present();
 
 protected:
 	int SizeX;

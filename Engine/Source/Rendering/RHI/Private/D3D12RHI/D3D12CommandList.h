@@ -35,8 +35,8 @@ public:
 	~FD3D12CommandList();
 
 public:
-	ID3D12CommandList* GetDxCommandList() { return DxCommandList.Get(); }
+	ID3D12GraphicsCommandList* GetDxCommandList() { return DxCommandList.Get(); }
 
 private:
-	ComPtr<ID3D12CommandList> DxCommandList;
+	ComPtr<ID3D12GraphicsCommandList> DxCommandList;
 };

@@ -17,8 +17,3 @@ void FRHI::Exit()
 {
 	FDynamicRHI::Get()->Exit();
 }
-
-FRHICommands* FRHI::GetRHICommands()
-{
-	return FDynamicRHI::GetRHICommands();
-}

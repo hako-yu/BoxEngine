@@ -1,8 +1,9 @@
 #include "Runtime/RenderEngine.h"
 
+#include "RHICore/RHI.h"
+#include "RHICore/RHICommands.h"
 #include "Viewport/Viewport.h"
 #include "Scene/RenderingScene.h"
-#include "RHICore/RHI.h"
 #include "SceneRenderer/DeferredShadingRenderer.h"
 
 // Test
@@ -24,6 +25,7 @@ bool FRenderEngine::Init()
 {
 	// Init RHI
 	FRHI::Init();
+	EXECUTE_RHI_COMMAND(InitRHIEnvironment)();
 
 	// Init Viewport
 	MainViewport = new FViewport();

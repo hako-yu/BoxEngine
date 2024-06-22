@@ -51,3 +51,8 @@ void FD3D12Viewport::InitSwapChain(void* WindowHandle, int Width, int Height)
         &DxSwapChain);
     ThrowIfFailed(HRes);
 }
+
+void FD3D12Viewport::Present()
+{
+    DxSwapChain->Present(0, 0);
+}

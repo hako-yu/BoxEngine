@@ -5,7 +5,8 @@
 class FPrimitiveInfo
 {
 public:
-	FPrimitiveInfo(FString FilePath);
+	FPrimitiveInfo();
+	FPrimitiveInfo(const FString& FilePath);
 
 protected:
 	TArray<FVector> Vertexs;

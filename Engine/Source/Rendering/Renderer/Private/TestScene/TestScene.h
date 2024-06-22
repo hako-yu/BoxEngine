@@ -4,5 +4,6 @@
 
 class FTestSceneBuildingFunction
 {
+public:
     static void BuildTestScene(FRenderingScene* Scene);
-}
+};
