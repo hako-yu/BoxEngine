@@ -72,7 +72,7 @@ void FLauncher::Run()
         }
         else
         {
-            Sleep(100);
+            // Sleep(100);
             RenderEngine->Tick();
         }
     }

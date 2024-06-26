@@ -2,11 +2,17 @@
 
 #include "D3D12RHI/D3D12RHICommon.h"
 
+class FD3D12CommandQueue;
+class FD3D12CommandAllocator;
+class FD3D12CommandList;
+
 class FD3D12CommandQueue : public FD3D12DeviceChild
 {
 public:
 	FD3D12CommandQueue(FD3D12Device* ParentDevice);
 	~FD3D12CommandQueue();
+
+	void ExecuteCommandList(FD3D12CommandList* CommandList);
 
 public:
 	ID3D12CommandQueue* GetDxCommandQueue() { return DxCommandQueue.Get(); }

@@ -35,12 +35,6 @@ void FD3D12Commands::BeginFrame()
 
 void FD3D12Commands::EndFrame()
 {
-	FD3D12Device* Device = FD3D12RHI::Get()->GetRootAdapter()->GetRootDevice();
-	ID3D12CommandAllocator* CmdAllocator = Device->GetDefaultCommandAllocator()->GetDxCommandAllocator();
-	ID3D12GraphicsCommandList* CmdList = Device->GetDefaultCommandList()->GetDxCommandList();
-
-	CmdList->Close();
-
 	FD3D12Adapter* Adapter = FD3D12RHI::Get()->GetRootAdapter();
 	FD3D12Viewport* MainViewport = Adapter->GetMainViewport();
 	MainViewport->Present();

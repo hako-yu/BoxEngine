@@ -28,6 +28,7 @@ target_include_directories(
 
 target_link_libraries(
     ${TARGET_NAME}
+    PRIVATE Core
     PRIVATE Logging
 
     PRIVATE dxgi
