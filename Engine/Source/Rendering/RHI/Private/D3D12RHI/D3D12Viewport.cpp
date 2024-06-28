@@ -152,7 +152,7 @@ void FD3D12Viewport::InitBackBuffers()
     ResDesc.SampleDesc.Count = MsaaState ? 4 : 1;
     ResDesc.SampleDesc.Quality = MsaaState ? (MsaaQuality - 1) : 0;
     ResDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-    ResDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+    ResDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
 
     D3D12_CLEAR_VALUE ClearValue;
     ClearValue.Format = BufferFormat;

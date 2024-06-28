@@ -11,7 +11,8 @@ FD3D12Resource::FD3D12Resource(FD3D12Device* ParentDevice,
 	const D3D12_CLEAR_VALUE* ClearValue)
 	: FD3D12DeviceChild(ParentDevice)
 {
-	ParentDevice->GetDxDevice()->CreateCommittedResource(
+	HRESULT HRes;
+	HRes = ParentDevice->GetDxDevice()->CreateCommittedResource(
 		HeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		ResourceDesc,
@@ -19,6 +20,7 @@ FD3D12Resource::FD3D12Resource(FD3D12Device* ParentDevice,
 		ClearValue,
 		IID_PPV_ARGS(&DxResource)
 	);
+	ThrowIfFailed(HRes);
 }
 
 FD3D12Resource::FD3D12Resource(FD3D12Device* ParentDevice, ID3D12Resource* Resource)

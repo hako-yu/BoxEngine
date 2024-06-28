@@ -18,4 +18,6 @@ protected:
 public:
 	virtual void Init() = 0;
 	virtual void Exit() = 0;
+
+	virtual void EnableDebug() = 0;
 };

@@ -10,6 +10,7 @@ void FRHI::Init()
 	// D3D12
 	FD3D12RHI::Create();
 
+	FDynamicRHI::Get()->EnableDebug();
 	FDynamicRHI::Get()->Init();
 }
 

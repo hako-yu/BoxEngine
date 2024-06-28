@@ -14,6 +14,8 @@ protected:
 	virtual void Init() override;
 	virtual void Exit() override;
 
+	virtual void EnableDebug() override;
+
 public:
 	void InitRootAdapter();
 

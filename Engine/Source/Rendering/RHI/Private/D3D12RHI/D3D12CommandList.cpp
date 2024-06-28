@@ -3,7 +3,7 @@
 #include "D3D12RHI/D3D12Device.h"
 
 // Command Queue
-#pragma region CommandQueue
+#pragma region FD3D12CommandQueue
 FD3D12CommandQueue::FD3D12CommandQueue(FD3D12Device* ParentDevice)
 	: FD3D12DeviceChild(ParentDevice)
 {
@@ -28,10 +28,14 @@ void FD3D12CommandQueue::ExecuteCommandList(FD3D12CommandList* CommandList)
 	CommandList->GetDxCommandList()->Close();
 	ID3D12CommandList* CmdLists[] = { CommandList->GetDxCommandList() };
 	DxCommandQueue->ExecuteCommandLists(1, CmdLists);
+
+	CurrentFenceNum++;
+	DxCommandQueue->Signal(DxFence.Get(), CurrentFenceNum);
 }
 #pragma endregion
 
 // Command Allocator
+#pragma region FD3D12CommandAllocator
 FD3D12CommandAllocator::FD3D12CommandAllocator(FD3D12Device* ParentDevice)
 	: FD3D12DeviceChild(ParentDevice)
 {
@@ -48,10 +52,13 @@ FD3D12CommandAllocator::~FD3D12CommandAllocator()
 {
 	DxCommandAllocator.Reset();
 }
+#pragma endregion
 
 // Command List
+#pragma region FD3D12CommandList
 FD3D12CommandList::FD3D12CommandList(FD3D12CommandAllocator* Allocator, FD3D12Device* ParentDevice)
 	: FD3D12DeviceChild(ParentDevice)
+	, CmdAllocator(Allocator)
 {
 	ID3D12Device* DxDevice = ParentDevice->GetDxDevice();
 
@@ -59,13 +66,22 @@ FD3D12CommandList::FD3D12CommandList(FD3D12CommandAllocator* Allocator, FD3D12De
 	HRes = DxDevice->CreateCommandList(
 		0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		Allocator->GetDxCommandAllocator(),
+		CmdAllocator->GetDxCommandAllocator(),
 		nullptr,
 		IID_PPV_ARGS(&DxCommandList));
 	ThrowIfFailed(HRes);
+
+	DxCommandList->Close();
 }
 
 FD3D12CommandList::~FD3D12CommandList()
 {
 	DxCommandList.Reset();
 }
+
+void FD3D12CommandList::Reset(FD3D12CommandAllocator* Allocator)
+{
+	CmdAllocator = Allocator;
+	DxCommandList->Reset(CmdAllocator->GetDxCommandAllocator(), nullptr);
+}
+#pragma endregion

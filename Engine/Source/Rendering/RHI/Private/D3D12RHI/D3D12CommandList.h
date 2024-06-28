@@ -17,6 +17,10 @@ public:
 public:
 	ID3D12CommandQueue* GetDxCommandQueue() { return DxCommandQueue.Get(); }
 
+protected:
+	int CurrentFenceNum = 0;
+	ComPtr<ID3D12Fence> DxFence;
+
 private:
 	ComPtr<ID3D12CommandQueue> DxCommandQueue;
 };
@@ -28,8 +32,13 @@ public:
 	~FD3D12CommandAllocator();
 
 public:
-	ID3D12CommandAllocator* GetDxCommandAllocator() { return DxCommandAllocator.Get(); }
+	void Reset();
+	void SetFenceNum(int NewFenceNum) { FenceNum = NewFenceNum; }
+protected:
+	int FenceNum = 0;
 
+public:
+	ID3D12CommandAllocator* GetDxCommandAllocator() { return DxCommandAllocator.Get(); }
 private:
 	ComPtr<ID3D12CommandAllocator> DxCommandAllocator;
 };
@@ -41,8 +50,13 @@ public:
 	~FD3D12CommandList();
 
 public:
-	ID3D12GraphicsCommandList* GetDxCommandList() { return DxCommandList.Get(); }
+	void Reset(FD3D12CommandAllocator* Allocator);
+	void RefreshFenceNum(int NewFenceNum);
+protected:
+	FD3D12CommandAllocator* CmdAllocator;
 
+public:
+	ID3D12GraphicsCommandList* GetDxCommandList() { return DxCommandList.Get(); }
 private:
 	ComPtr<ID3D12GraphicsCommandList> DxCommandList;
 };
