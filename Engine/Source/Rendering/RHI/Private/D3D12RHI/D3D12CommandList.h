@@ -12,11 +12,12 @@ public:
 	FD3D12CommandQueue(FD3D12Device* ParentDevice);
 	~FD3D12CommandQueue();
 
+public:
 	void ExecuteCommandList(FD3D12CommandList* CommandList);
+	void Flush();
 
 public:
 	ID3D12CommandQueue* GetDxCommandQueue() { return DxCommandQueue.Get(); }
-
 protected:
 	int CurrentFenceNum = 0;
 	ComPtr<ID3D12Fence> DxFence;
@@ -32,9 +33,10 @@ public:
 	~FD3D12CommandAllocator();
 
 public:
-	void Reset();
-	void SetFenceNum(int NewFenceNum) { FenceNum = NewFenceNum; }
+	void Flush();
+	void SetFence(ID3D12Fence* NewFence, int NewFenceNum);
 protected:
+	ID3D12Fence* Fence = nullptr;
 	int FenceNum = 0;
 
 public:
@@ -51,7 +53,7 @@ public:
 
 public:
 	void Reset(FD3D12CommandAllocator* Allocator);
-	void RefreshFenceNum(int NewFenceNum);
+	void RefreshFenceNum(ID3D12Fence* NewFence, int NewFenceNum);
 protected:
 	FD3D12CommandAllocator* CmdAllocator;
 

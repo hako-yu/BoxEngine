@@ -26,11 +26,11 @@ void FD3D12Commands::ResetOutputWindow(void* WindowHandle, int Width, int Height
 void FD3D12Commands::BeginFrame()
 {
 	FD3D12Device* Device = FD3D12RHI::Get()->GetRootAdapter()->GetRootDevice();
-	ID3D12CommandAllocator* CmdAllocator = Device->GetDefaultCommandAllocator()->GetDxCommandAllocator();
-	ID3D12GraphicsCommandList* CmdList = Device->GetDefaultCommandList()->GetDxCommandList();
+	FD3D12CommandAllocator* CmdAllocator = Device->GetDefaultCommandAllocator();
+	FD3D12CommandList* CmdList = Device->GetDefaultCommandList();
 
-	CmdAllocator->Reset();
-	CmdList->Reset(CmdAllocator, nullptr);
+	CmdAllocator->Flush();
+	CmdList->Reset(CmdAllocator);
 }
 
 void FD3D12Commands::EndFrame()

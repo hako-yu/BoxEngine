@@ -96,6 +96,8 @@ void FD3D12Viewport::Present()
 
     DxSwapChain->Present(0, 0);
 
+    CmdQueue->Flush();
+
     CurFrontBufferIndex = (CurFrontBufferIndex + 1) % FrontBufferCount;
     CurBackBufferIndex = (CurBackBufferIndex + 1) % BackBufferCount;
 }
