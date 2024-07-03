@@ -71,35 +71,36 @@ void FD3D12Viewport::Resize(int Width, int Height)
     OnBufferRefresh();
 }
 
-void FD3D12Viewport::Present()
+void FD3D12Viewport::PresentBackBuffer()
 {
-    FD3D12CommandList* CmdList = ParentAdapter->GetRootDevice()->GetDefaultCommandList();
+    CurBackBufferIndex = (CurBackBufferIndex + 1) % BackBufferCount;
+}
 
+void FD3D12Viewport::UploadLastBackBuffer(FD3D12CommandList* CmdList)
+{
     FD3D12Resource* FrontBuffer = GetCurrentFrontBuffer();
-    FD3D12Resource* BackBuffer = GetCurrentBackBuffer();
+    int LastBackBufferIndex = (CurBackBufferIndex + BackBufferCount - 1) % BackBufferCount;
+    FD3D12Resource* LastBackBuffer = BackBuffers[LastBackBufferIndex];
 
     FD3D12ResourceBarrierBatcher BarrierBatcher;
     BarrierBatcher.AddTransition(FrontBuffer, D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_COPY_DEST);
-    BarrierBatcher.AddTransition(BackBuffer, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COPY_SOURCE);
+    BarrierBatcher.AddTransition(LastBackBuffer, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_COPY_SOURCE);
     BarrierBatcher.FlushIntoCommandList(CmdList);
-    
+
     ID3D12GraphicsCommandList* DxCmdList = CmdList->GetDxCommandList();
-    DxCmdList->CopyResource(FrontBuffer->GetDxResource(), BackBuffer->GetDxResource());
+    DxCmdList->CopyResource(FrontBuffer->GetDxResource(), LastBackBuffer->GetDxResource());
 
     BarrierBatcher.Reset();
     BarrierBatcher.AddTransition(FrontBuffer, D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PRESENT);
-    BarrierBatcher.AddTransition(BackBuffer, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+    BarrierBatcher.AddTransition(LastBackBuffer, D3D12_RESOURCE_STATE_COPY_SOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
     BarrierBatcher.FlushIntoCommandList(CmdList);
+}
 
-    FD3D12CommandQueue* CmdQueue = ParentAdapter->GetRootDevice()->GetRootQueue();
-    CmdQueue->ExecuteCommandList(CmdList);
-
+void FD3D12Viewport::Present()
+{
     DxSwapChain->Present(0, 0);
 
-    CmdQueue->Flush();
-
     CurFrontBufferIndex = (CurFrontBufferIndex + 1) % FrontBufferCount;
-    CurBackBufferIndex = (CurBackBufferIndex + 1) % BackBufferCount;
 }
 
 void FD3D12Viewport::OnBufferRefresh()

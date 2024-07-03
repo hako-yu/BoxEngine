@@ -3,9 +3,8 @@
 #include "D3D12RHICommon.h"
 #include "D3D12RHI/D3D12RHI.h"
 #include "D3D12RHI/D3D12Adapter.h"
-#include "D3D12RHI/D3D12Device.h"
-#include "D3D12RHI/D3D12CommandList.h"
 #include "D3D12RHI/D3D12Viewport.h"
+#include "D3D12RHI/D3D12Pass.h"
 
 void FD3D12Commands::InitRHIEnvironment()
 {
@@ -25,18 +24,13 @@ void FD3D12Commands::ResetOutputWindow(void* WindowHandle, int Width, int Height
 
 void FD3D12Commands::BeginFrame()
 {
-	FD3D12Device* Device = FD3D12RHI::Get()->GetRootAdapter()->GetRootDevice();
-	FD3D12CommandAllocator* CmdAllocator = Device->GetDefaultCommandAllocator();
-	FD3D12CommandList* CmdList = Device->GetDefaultCommandList();
 
-	CmdAllocator->Flush();
-	CmdList->Reset(CmdAllocator);
 }
 
 void FD3D12Commands::EndFrame()
 {
 	FD3D12Adapter* Adapter = FD3D12RHI::Get()->GetRootAdapter();
-	FD3D12Viewport* MainViewport = Adapter->GetMainViewport();
-	MainViewport->Present();
+	FD3D12Pass OnePass(Adapter);
+	OnePass.Run();
 }
 

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "D3D12RHI/D3D12RHICommon.h"
 
+class FD3D12CommandList;
 class FD3D12Resource;
 
 class FD3D12Viewport : public FD3D12AdapterChild
@@ -18,6 +19,9 @@ public:
 	FD3D12Resource* GetCurrentFrontBuffer() { return FrontBuffers[CurFrontBufferIndex]; }
 	FD3D12Resource* GetCurrentBackBuffer() { return BackBuffers[CurBackBufferIndex]; }
 
+	void PresentBackBuffer();
+
+	void UploadLastBackBuffer(FD3D12CommandList* CmdList);
 	void Present();
 
 protected:

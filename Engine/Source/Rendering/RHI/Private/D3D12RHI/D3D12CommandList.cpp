@@ -31,14 +31,31 @@ void FD3D12CommandQueue::ExecuteCommandList(FD3D12CommandList* CommandList)
 	CommandList->GetDxCommandList()->Close();
 	ID3D12CommandList* CmdLists[] = { CommandList->GetDxCommandList() };
 	DxCommandQueue->ExecuteCommandLists(1, CmdLists);
-
-	CurrentFenceNum++;
-	CommandList->RefreshFenceNum(DxFence.Get(), CurrentFenceNum);
 }
 
 void FD3D12CommandQueue::Flush()
 {
+	CurrentFenceNum++;
 	DxCommandQueue->Signal(DxFence.Get(), CurrentFenceNum);
+
+	if (DxFence->GetCompletedValue() < CurrentFenceNum)
+	{
+		HANDLE Handle = CreateEvent(nullptr, false, false, nullptr);
+		if (Handle)
+		{
+			HRESULT HRes;
+			HRes = DxFence->SetEventOnCompletion(CurrentFenceNum, Handle);
+			ThrowIfFailed(HRes);
+
+			WaitForSingleObject(Handle, INFINITE);
+
+			CloseHandle(Handle);
+		}
+		else
+		{
+			ThrowIfFailed(GetLastError());
+		}
+	}
 }
 #pragma endregion
 
@@ -61,38 +78,11 @@ FD3D12CommandAllocator::~FD3D12CommandAllocator()
 	DxCommandAllocator.Reset();
 }
 
-void FD3D12CommandAllocator::Flush()
+void FD3D12CommandAllocator::Reset()
 {
-	if (!Fence) return;
-
-	if (Fence->GetCompletedValue() < FenceNum)
-	{
-		HANDLE Handle = CreateEventEx(nullptr, nullptr, CREATE_EVENT_INITIAL_SET, EVENT_ALL_ACCESS);
-		if (Handle)
-		{
-			HRESULT HRes;
-			HRes = Fence->SetEventOnCompletion(FenceNum, Handle);
-			ThrowIfFailed(HRes);
-
-			WaitForSingleObject(Handle, INFINITE);
-
-			CloseHandle(Handle);
-		}
-		else
-		{
-			ThrowIfFailed(GetLastError());
-		}
-	}
-
 	HRESULT HRes;
 	HRes = DxCommandAllocator->Reset();
 	ThrowIfFailed(HRes);
-}
-
-void FD3D12CommandAllocator::SetFence(ID3D12Fence* NewFence, int NewFenceNum)
-{
-	Fence = NewFence;
-	FenceNum = NewFenceNum;
 }
 #pragma endregion
 
@@ -100,7 +90,6 @@ void FD3D12CommandAllocator::SetFence(ID3D12Fence* NewFence, int NewFenceNum)
 #pragma region FD3D12CommandList
 FD3D12CommandList::FD3D12CommandList(FD3D12CommandAllocator* Allocator, FD3D12Device* ParentDevice)
 	: FD3D12DeviceChild(ParentDevice)
-	, CmdAllocator(Allocator)
 {
 	ID3D12Device* DxDevice = ParentDevice->GetDxDevice();
 
@@ -108,7 +97,7 @@ FD3D12CommandList::FD3D12CommandList(FD3D12CommandAllocator* Allocator, FD3D12De
 	HRes = DxDevice->CreateCommandList(
 		0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		CmdAllocator->GetDxCommandAllocator(),
+		Allocator->GetDxCommandAllocator(),
 		nullptr,
 		IID_PPV_ARGS(&DxCommandList));
 	ThrowIfFailed(HRes);
@@ -123,12 +112,6 @@ FD3D12CommandList::~FD3D12CommandList()
 
 void FD3D12CommandList::Reset(FD3D12CommandAllocator* Allocator)
 {
-	CmdAllocator = Allocator;
-	DxCommandList->Reset(CmdAllocator->GetDxCommandAllocator(), nullptr);
-}
-
-void FD3D12CommandList::RefreshFenceNum(ID3D12Fence* NewFence, int NewFenceNum)
-{
-	CmdAllocator->SetFence(NewFence, NewFenceNum);
+	DxCommandList->Reset(Allocator->GetDxCommandAllocator(), nullptr);
 }
 #pragma endregion

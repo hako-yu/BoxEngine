@@ -33,11 +33,7 @@ public:
 	~FD3D12CommandAllocator();
 
 public:
-	void Flush();
-	void SetFence(ID3D12Fence* NewFence, int NewFenceNum);
-protected:
-	ID3D12Fence* Fence = nullptr;
-	int FenceNum = 0;
+	void Reset();
 
 public:
 	ID3D12CommandAllocator* GetDxCommandAllocator() { return DxCommandAllocator.Get(); }
@@ -53,9 +49,6 @@ public:
 
 public:
 	void Reset(FD3D12CommandAllocator* Allocator);
-	void RefreshFenceNum(ID3D12Fence* NewFence, int NewFenceNum);
-protected:
-	FD3D12CommandAllocator* CmdAllocator;
 
 public:
 	ID3D12GraphicsCommandList* GetDxCommandList() { return DxCommandList.Get(); }
