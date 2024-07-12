@@ -16,21 +16,19 @@ public:
 public:
 	void InitRootQueue();
 	void InitDefaultCommandList();
+	void InitDefaultPipelineState();
 
+public:
 	FD3D12CommandQueue* GetRootQueue() { return RootQueue; }
-
 	FD3D12CommandAllocator* GetDefaultCommandAllocator() { return DefaultCommandAllocator; }
 	FD3D12CommandList* GetDefaultCommandList() { return DefaultCommandList; }
-
 protected:
 	FD3D12CommandQueue* RootQueue = nullptr;
-
 	FD3D12CommandAllocator* DefaultCommandAllocator = nullptr;
 	FD3D12CommandList* DefaultCommandList = nullptr;
 
 public:
 	ID3D12Device* GetDxDevice() { return DxDevice.Get(); }
-
 private:
 	ComPtr<ID3D12Device> DxDevice;
 };

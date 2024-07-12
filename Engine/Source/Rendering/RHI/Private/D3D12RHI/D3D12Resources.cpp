@@ -34,6 +34,34 @@ FD3D12Resource::~FD3D12Resource()
 {
 
 }
+
+bool FD3D12Resource::InitHeapProp(D3D12_HEAP_PROPERTIES& HeapProp, D3D12_HEAP_TYPE HeapType)
+{
+	HeapProp.Type = HeapType;
+	HeapProp.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+	HeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+	HeapProp.CreationNodeMask = 1;
+	HeapProp.VisibleNodeMask = 1;
+
+	return true;
+}
+
+bool FD3D12Resource::InitResourceDesc(D3D12_RESOURCE_DESC& ResourceDesc, int BufferSize)
+{
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	ResourceDesc.Alignment = 0;
+	ResourceDesc.Width = BufferSize;
+	ResourceDesc.Height = 1;
+	ResourceDesc.DepthOrArraySize = 1;
+	ResourceDesc.MipLevels = 1;
+	ResourceDesc.Format = DXGI_FORMAT_UNKNOWN;
+	ResourceDesc.SampleDesc.Count = 1;
+	ResourceDesc.SampleDesc.Quality = 0;
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+
+	return true;
+}
 #pragma endregion
 
 #pragma region FD3D12ResourceBarrierBatcher

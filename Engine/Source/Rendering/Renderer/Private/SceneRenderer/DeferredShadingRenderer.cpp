@@ -2,13 +2,17 @@
 
 #include "RHICore/RHICommands.h"
 
-FDeferredShadingRenderer::FDeferredShadingRenderer(FRenderingScene* InScene, FViewport* InViewport)
-    : FBaseSceneRenderer(InScene, InViewport)
+FDeferredShadingRenderer::FDeferredShadingRenderer()
 {
 
 }
 
 FDeferredShadingRenderer::~FDeferredShadingRenderer()
+{
+
+}
+
+void FDeferredShadingRenderer::InitPass()
 {
 
 }

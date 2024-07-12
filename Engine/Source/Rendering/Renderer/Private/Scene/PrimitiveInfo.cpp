@@ -1,11 +1,8 @@
 #include "Scene/PrimitiveInfo.h"
 
-FPrimitiveInfo::FPrimitiveInfo()
-{
-
-}
-
-FPrimitiveInfo::FPrimitiveInfo(const FString& FilePath)
+FPrimitiveInfo::FPrimitiveInfo(const FMeshGeometry& InMesh, const FTransform& InTrans)
+	: Mesh(InMesh)
+	, Transform(InTrans)
 {
 
 }

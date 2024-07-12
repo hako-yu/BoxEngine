@@ -1,13 +1,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Geometry/MeshGeometry.h"
 
 class FPrimitiveInfo
 {
 public:
-	FPrimitiveInfo();
-	FPrimitiveInfo(const FString& FilePath);
+	FPrimitiveInfo(
+		const FMeshGeometry& InMesh,
+		const FTransform& InTrans
+	);
 
 protected:
-	TArray<FVector> Vertexs;
+	FMeshGeometry Mesh;
+	FTransform Transform;
 };

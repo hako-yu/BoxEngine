@@ -2,6 +2,7 @@
 
 #include "D3D12RHI/D3D12Adapter.h"
 #include "D3D12RHI/D3D12CommandList.h"
+#include "D3D12RHI/D3D12PipelineState.h"
 
 FD3D12Device::FD3D12Device(FD3D12Adapter* ParentAdapter)
 	: FD3D12AdapterChild(ParentAdapter)
@@ -35,4 +36,9 @@ void FD3D12Device::InitDefaultCommandList()
 {
 	DefaultCommandAllocator = new FD3D12CommandAllocator(this);
 	DefaultCommandList = new FD3D12CommandList(DefaultCommandAllocator, this);
+}
+
+void FD3D12Device::InitDefaultPipelineState()
+{
+	DefaultPipelineState = new FD3D12PipelineState(this);
 }

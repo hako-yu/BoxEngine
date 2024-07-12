@@ -1,13 +1,23 @@
 #pragma once
 
-#include "SceneRenderer/BaseSceneRenderer.h"
+#include "SceneRenderer/BaseRenderer.h"
 
-class FDeferredShadingRenderer : public FBaseSceneRenderer
+class FRHIPass;
+
+class FDeferredShadingRenderer : public FBaseRenderer
 {
 public:
-    FDeferredShadingRenderer(FRenderingScene* InScene, FViewport* InViewport);
+    FDeferredShadingRenderer();
     ~FDeferredShadingRenderer();
 
 public:
+    virtual void InitPass() override;
     virtual void Render() override;
+
+protected:
+    void InitPrePass();
+    void InitBasePass();
+protected:
+    FRHIPass* PrePass = nullptr;
+    FRHIPass* BasePass = nullptr;
 };

@@ -1,17 +1,16 @@
 #pragma once
 
-class FRHIViewport;
 class FRHICommands;
 
 class FDynamicRHI
 {
 public:
 	static FDynamicRHI* Get() { return Singleton; }
-	static FRHICommands* GetRHICommands() { return Singleton->RHICommands; }
-
 protected:
 	static FDynamicRHI* Singleton;
 
+public:
+	static FRHICommands* GetRHICommands() { return Singleton->RHICommands; }
 protected:
 	FRHICommands* RHICommands;
 

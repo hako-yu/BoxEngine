@@ -4,7 +4,8 @@
 #include "RHICore/RHICommands.h"
 #include "Viewport/Viewport.h"
 #include "Scene/RenderingScene.h"
-#include "SceneRenderer/DeferredShadingRenderer.h"
+#include "MeshProcessor/MeshProcessor.h"
+#include "SceneRenderer/SceneRenderer.h"
 
 // Test
 #include "TestScene/TestScene.h"
@@ -31,6 +32,12 @@ bool FRenderEngine::Init()
 	MainViewport = new FViewport();
 	MainViewport->AddToWindow(GInstance);
 
+	// Init Scene Renderer
+	SceneRenderer = new FSceneRenderer();
+
+	// Init Mesh Processor
+	MeshProcessor = new FMeshProcessor();
+
 	// Init Rendering Scene
 	Scene = new FRenderingScene();
 
@@ -43,8 +50,7 @@ bool FRenderEngine::Init()
 void FRenderEngine::Tick()
 {
 	// Scene Renderer
-	FDeferredShadingRenderer Renderer(Scene, MainViewport);
-	Renderer.Render();
+	SceneRenderer->Render(Scene, MainViewport);
 
 	MainViewport->Update();
 }

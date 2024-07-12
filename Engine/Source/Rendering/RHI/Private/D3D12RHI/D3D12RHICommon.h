@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RHICore/RHICommon.h"
 #include "D3D12RHI/D3D12Util.h"
 
 class FD3D12Adapter;

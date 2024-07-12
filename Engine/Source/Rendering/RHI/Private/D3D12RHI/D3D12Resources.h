@@ -18,11 +18,19 @@ public:
 		const D3D12_RESOURCE_DESC* ResourceDesc,
 		D3D12_RESOURCE_STATES InitialState,
 		const D3D12_CLEAR_VALUE* ClearValue);
+
 	FD3D12Resource(FD3D12Device* ParentDevice, ID3D12Resource* Resource);
 	~FD3D12Resource();
 
-	ID3D12Resource* GetDxResource() { return DxResource.Get(); }
+public:
+	static bool InitHeapProp(D3D12_HEAP_PROPERTIES& HeapProp,
+		D3D12_HEAP_TYPE HeapType);
 
+	static bool InitResourceDesc(D3D12_RESOURCE_DESC& ResourceDesc,
+		int BufferSize);
+
+public:
+	ID3D12Resource* GetDxResource() { return DxResource.Get(); }
 private:
 	ComPtr<ID3D12Resource> DxResource;
 };
