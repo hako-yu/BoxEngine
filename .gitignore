@@ -1,55 +1,52 @@
-# Cursor
-CursorRequirements.md
-
-# Build directories
-Binaries/
-Intermediate/
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 
 # Visual Studio
-.vs/
+*.sln
 *.vcxproj
 *.vcxproj.filters
-*.vcxproj.user
-*.sln
-*.suo
 *.user
+*.opensdf
+*.sdf
+*.suo
+*.VC.db
+*.VC.VC.opendb
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
+# 编译产物
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
+*.o
 *.lib
-
-# Executables
+*.dll
 *.exe
-*.out
-*.app
+*.pdb
+*.exp
+*.log
+*.tlog
+*.recipe
+*.lastbuildstate
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# 生成的二进制和中间文件
+Binaries/
+Intermediate/
+Release/
+Debug/
+x64/
+*.ipch
 
-# OS
+# 系统文件
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log 
+# 其他
+*.tmp
+*.cache
+*.bak
+*.swp
+*.userprefs
+
+# 忽略根目录下的README和.gitignore自身
+!/README.md
+!/.gitignore 
